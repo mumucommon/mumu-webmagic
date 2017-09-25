@@ -5,7 +5,9 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author babymm
@@ -56,7 +58,7 @@ public class SimpleImagesPageProcessor implements PageProcessor {
         }
         List<String> images = page.getHtml().xpath("//img/@src").all();
         if (images != null) {
-            List<String> imagesList = new ArrayList<String>();
+            Set<String> imagesSet = new HashSet<String>();
             for (String image : images) {
                 if (!image.contains("HTTP") && !image.contains("http")) {
                     continue;
@@ -79,9 +81,9 @@ public class SimpleImagesPageProcessor implements PageProcessor {
                         continue;
                     }
                 }
-                imagesList.add(image);
+                imagesSet.add(image);
             }
-            page.putField("images", imagesList);
+            page.putField("images", imagesSet);
         }
     }
 

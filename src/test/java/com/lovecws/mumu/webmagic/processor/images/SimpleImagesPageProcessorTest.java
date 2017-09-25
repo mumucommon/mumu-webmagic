@@ -1,6 +1,7 @@
 package com.lovecws.mumu.webmagic.processor.images;
 
 import com.lovecws.mumu.webmagic.downloader.HttpClientDownloader;
+import com.lovecws.mumu.webmagic.pipeline.ImageDownloadPipeline;
 import org.junit.Test;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
@@ -27,8 +28,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{"http://www.umei.cc"}))
                 .addUrl("http://www.umei.cc")
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/umei", false))
+                .thread(20);
         spider.run();
     }
 
@@ -38,8 +39,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{url}))
                 .addUrl(url)
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/mm131", false))
+                .thread(50);
         spider.run();
     }
 
@@ -49,8 +50,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{url}))
                 .addUrl(url)
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/27270", false))
+                .thread(50);
         spider.run();
     }
 
@@ -60,8 +61,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{url}))
                 .addUrl(url)
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/7160", false))
+                .thread(50);
         spider.run();
     }
 
@@ -71,8 +72,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{url}))
                 .addUrl(url)
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/yesky", false))
+                .thread(50);
         spider.run();
     }
 
@@ -82,8 +83,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{url}))
                 .addUrl(url)
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/mmonly", false))
+                .thread(50);
         spider.run();
         spider.getPageCount();
     }
@@ -94,8 +95,8 @@ public class SimpleImagesPageProcessorTest {
         Spider spider = Spider.create(new SimpleImagesPageProcessor(new String[]{url}))
                 .addUrl(url)
                 .setDownloader(new HttpClientDownloader())
-                .addPipeline(new ConsolePipeline())
-                .thread(5);
+                .addPipeline(new ImageDownloadPipeline("d://data/webmagic/feizl", false))
+                .thread(50);
         spider.run();
         spider.getPageCount();
     }
