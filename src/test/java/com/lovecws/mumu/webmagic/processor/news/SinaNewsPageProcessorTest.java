@@ -85,11 +85,20 @@ public class SinaNewsPageProcessorTest {
 
     @Test
     public void finance() {
+        MultiJsonFilePipeline multiJsonFilePipeline = new MultiJsonFilePipeline("d:/data/webmagic/finance", 10000);
         Spider spider = Spider.create(new SinaNewsPageProcessor(new String[]{"http://finance.sina.com.cn"}))
                 .addUrl("http://finance.sina.com.cn")
-                .addPipeline(new MultiJsonFilePipeline("d:/data/webmagic", 100))
-                .thread(5);
+                .addPipeline(multiJsonFilePipeline)
+                .setExitWhenComplete(true)
+                .thread(50);
         spider.run();
+        //退出jvm虚拟机之前将爬取的新闻数据加载到硬盘
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                multiJsonFilePipeline.beforeExit();
+            }
+        }));
     }
 
     /**

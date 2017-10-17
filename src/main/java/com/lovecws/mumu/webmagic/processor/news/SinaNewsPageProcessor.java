@@ -130,7 +130,9 @@ public class SinaNewsPageProcessor implements PageProcessor {
             page.putField("mediaUrl", page.getHtml().xpath("//span[@class=time-source]/span/a/@href").get());
         } else if (from_info != null && !"".equalsIgnoreCase(from_info)) {
             String pubDate = page.getHtml().xpath("//span[@class=from_info]/text()").get();
-            pubDate = pubDate.replace("http://www.sina.com.cn", "").trim();
+            if (pubDate != null) {
+                pubDate = pubDate.replace("http://www.sina.com.cn", "").trim();
+            }
             page.putField("pubDate", pubDate);
             page.putField("mediaName", page.getHtml().xpath("//span[@class=from_info]/span/a/text()").get());
             page.putField("mediaUrl", page.getHtml().xpath("//span[@class=from_info]/span/a/@href").get());
@@ -139,7 +141,11 @@ public class SinaNewsPageProcessor implements PageProcessor {
         String url = page.getUrl().get();
         int firstIndex = url.indexOf("/", 10);
         int secondIndex = url.indexOf("/", firstIndex + 1);
-        page.putField("type", url.substring(firstIndex + 1, secondIndex));
+        if (firstIndex != -1 && secondIndex != -1) {
+            page.putField("type", url.substring(firstIndex + 1, secondIndex));
+        } else {
+            page.putField("type", "finance");
+        }
     }
 
     @Override

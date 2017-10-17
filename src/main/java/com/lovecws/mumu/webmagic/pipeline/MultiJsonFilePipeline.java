@@ -1,7 +1,7 @@
 package com.lovecws.mumu.webmagic.pipeline;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.ResultItems;
@@ -11,6 +11,7 @@ import us.codecraft.webmagic.utils.FilePersistentBase;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -43,21 +44,35 @@ public class MultiJsonFilePipeline extends FilePersistentBase implements Pipelin
     @Override
     public void process(final ResultItems resultItems, final Task task) {
         if (JSONQUEUE.size() == counter) {
-            Object[] objects = JSONQUEUE.toArray();
-            JSONQUEUE.clear();
-            try {
-                PrintWriter printWriter = new PrintWriter(new FileWriter(this.getFile(path + DigestUtils.md5Hex(resultItems.getRequest().getUrl()) + ".json")));
-                printWriter.write(JSON.toJSONString(objects));
-                printWriter.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            save();
         } else {
             try {
                 JSONQUEUE.put(resultItems.getAll());
+                logger.info("队列数量:" + JSONQUEUE.size());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void beforeExit() {
+        if (JSONQUEUE.size() > 0) {
+            save();
+        }
+    }
+
+    public void save() {
+        Object[] objects = JSONQUEUE.toArray();
+        JSONQUEUE.clear();
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileWriter(this.getFile(path + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".json")));
+            for (Object object : objects) {
+                printWriter.write(JSON.toJSONString(object) + "\n");
+            }
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
